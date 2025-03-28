@@ -15,7 +15,7 @@ dependencies = [
     "pydantic>=2.10.6,<3.0.0",
     "python-multipart",
     "passlib[bcrypt] (>=1.7.4,<2.0.0)",
-    "cryptography (>=44.0.2,<45.0.0)"  
+    "cryptography (>=44.0.2,<45.0.0)" 
 ]
 
 [build-system]
