@@ -12,6 +12,10 @@ app = FastAPI()
 # экземпляр класса содержит url ссылку, которую клиент использует для отправки имени пользователя/пароля
 # для того чтобы получить токен
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+# schemes=["bcrypt"] алгоритм bcrypt для хэширования паролей
+# deprecated="auto" опция для управления устаревшими алгоритмами
+# "auto" означает, что если алгоритм помечен как устаревший,
+# passlib будет автоматически обновлять хеш при следующем использовании
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 SECRET_KEY = "4e614ac736aaa39f6c36fd1d33843127d8a361ed2dfefc12fc29d56c7d785b68"
@@ -50,7 +54,7 @@ class Token(BaseModel):
     token_type: str
 
 
-def verify_password(plain_password, hashed_password):
+def verify_password(plain_password: str, hashed_password: str):
     return pwd_context.verify(plain_password, hashed_password)
 
 
@@ -78,6 +82,7 @@ def authenticate_user(fake_db, username: str, password: str):
 
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    print("DEBUG: data received in create_access_token ->", data)  # Отладка
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
